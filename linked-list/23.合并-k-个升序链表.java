@@ -62,95 +62,124 @@
 }
  */
 
+//  class Solution {
+//     public ListNode mergeKLists(ListNode[] lists) {
+//         MinHeap heap = new MinHeap(lists.length);
+//         // 1. 将链表的头节点加入小顶堆
+//         for (ListNode h : lists) {
+//             if(h != null){
+//                 heap.offer(h);
+//             }
+//         }
+
+//         // 2. 不断从堆顶移除最小元素，加入新链表
+//         ListNode s = new ListNode(-1,null);
+//         ListNode t = s;
+//         while(!heap.isEmpty()){
+//             ListNode min = heap.poll();
+//             t.next = min;
+//             t = min;
+//             if(min.next != null){
+//                 heap.offer(min.next);
+//             }
+//         }
+        
+
+//         return s.next;
+        
+//     }
+
+//     class MinHeap {
+
+//         ListNode[] array;
+//         int size;
+    
+//         public MinHeap(int capacity) {
+//             array = new ListNode[capacity];
+//         }
+    
+//         public void offer(ListNode offered) {
+//             int child = size++;
+//             int parent = (child - 1) / 2;
+//             while (child > 0 && offered.val < array[parent].val) {
+//                 array[child] = array[parent];
+//                 child = parent;
+//                 parent = (child - 1) / 2;
+//             }
+//             array[child] = offered;
+//         }
+    
+//         public ListNode poll() {
+//             if (isEmpty()) {
+//                 return null;
+//             }
+//             swap(0, size - 1);
+//             size--;
+//             ListNode e = array[size];
+//             array[size] = null; // help GC
+    
+//             down(0);
+    
+//             return e;
+//         }
+    
+//         private void down(int parent) {
+//             int left = 2 * parent + 1;
+//             int right = left + 1;
+//             int min = parent;
+//             if (left < size && array[left].val < array[min].val) {
+//                 min = left;
+//             }
+//             if (right < size && array[right].val < array[min].val) {
+//                 min = right;
+//             }
+//             if (min != parent) {
+//                 swap(min, parent);
+//                 down(min);
+//             }
+//         }
+    
+//         private void swap(int i, int j) {
+//             ListNode t = array[i];
+//             array[i] = array[j];
+//             array[j] = t;
+//         }
+    
+//         public boolean isEmpty() {
+//             return size == 0;
+//         }
+//     }
+// }
+
+
  class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        MinHeap heap = new MinHeap(lists.length);
-        // 1. 将链表的头节点加入小顶堆
-        for (ListNode h : lists) {
-            if(h != null){
-                heap.offer(h);
-            }
+        if(lists.length == 0){
+            return null;
         }
 
-        // 2. 不断从堆顶移除最小元素，加入新链表
         ListNode s = new ListNode(-1,null);
-        ListNode t = s;
-        while(!heap.isEmpty()){
-            ListNode min = heap.poll();
-            t.next = min;
-            t = min;
+        ListNode p = s;
+
+        PriorityQueue<ListNode> pq = new PriorityQueue<>(
+            lists.length,(a,b) -> (a.val - b.val));
+        for(ListNode head : lists){
+            if(head != null){
+                pq.add(head);
+            }
+        }
+
+        while(!pq.isEmpty()){
+            ListNode min = pq.poll();
+            p.next = min;
             if(min.next != null){
-                heap.offer(min.next);
+                pq.add(min.next);
             }
+            p = p.next;
         }
-        
-
         return s.next;
-        
     }
+ }
 
-    class MinHeap {
-
-        ListNode[] array;
-        int size;
-    
-        public MinHeap(int capacity) {
-            array = new ListNode[capacity];
-        }
-    
-        public void offer(ListNode offered) {
-            int child = size++;
-            int parent = (child - 1) / 2;
-            while (child > 0 && offered.val < array[parent].val) {
-                array[child] = array[parent];
-                child = parent;
-                parent = (child - 1) / 2;
-            }
-            array[child] = offered;
-        }
-    
-        public ListNode poll() {
-            if (isEmpty()) {
-                return null;
-            }
-            swap(0, size - 1);
-            size--;
-            ListNode e = array[size];
-            array[size] = null; // help GC
-    
-            down(0);
-    
-            return e;
-        }
-    
-        private void down(int parent) {
-            int left = 2 * parent + 1;
-            int right = left + 1;
-            int min = parent;
-            if (left < size && array[left].val < array[min].val) {
-                min = left;
-            }
-            if (right < size && array[right].val < array[min].val) {
-                min = right;
-            }
-            if (min != parent) {
-                swap(min, parent);
-                down(min);
-            }
-        }
-    
-        private void swap(int i, int j) {
-            ListNode t = array[i];
-            array[i] = array[j];
-            array[j] = t;
-        }
-    
-        public boolean isEmpty() {
-            return size == 0;
-        }
-    }
-
-  
-}
 // @lc code=end
 
