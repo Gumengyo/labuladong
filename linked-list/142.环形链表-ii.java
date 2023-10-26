@@ -1,3 +1,6 @@
+import java.sql.RowId;
+import java.util.Map;
+
 /*
  * @lc app=leetcode.cn id=142 lang=java
  *
@@ -37,6 +40,21 @@ public class Solution {
         }
         return null;
     }
+    // 二分查找框架
+    int binary_search(int[] nums,int target){
+        int left=0,right=nums.length-1;
+        while(left <= right){
+            int mid = (left+right) >>> 1;
+            if(nums[mid] < target){
+                left = mid+1;
+            }else if(target < nums[mid]){
+                right = mid-1;
+            }else if(nums[mid] == target){
+                return mid;
+            }
+        }
+    }
+   
 }
 // @lc code=end
 

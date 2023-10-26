@@ -40,19 +40,36 @@ class Solution {
     */
 
     // 方法2
-    public ListNode deleteDuplicates(ListNode p) {
-       if(p == null || p.next == null){
-            return p;
-       }
+    // public ListNode deleteDuplicates(ListNode p) {
+    //    if(p == null || p.next == null){
+    //         return p;
+    //    }
 
-       if(p.val == p.next.val){
-            return deleteDuplicates(p.next);
-       }else{
-            p.next = deleteDuplicates(p.next);
-            return p;
-       }
+    //    if(p.val == p.next.val){
+    //         return deleteDuplicates(p.next);
+    //    }else{
+    //         p.next = deleteDuplicates(p.next);
+    //         return p;
+    //    }
         
-    }
+    // }
+
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast != null){
+            if(slow.val != fast.val){
+                slow = slow.next;
+                slow.val = fast.val;
+            }   
+            fast = fast.next;
+        }
+        slow.next = null;
+        return head;
+     }
 }
 // @lc code=end
 
